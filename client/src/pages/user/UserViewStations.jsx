@@ -1,0 +1,564 @@
+import React, { useEffect, useState } from 'react'
+import Nav from '../../components/Nav'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
+
+export default function UserViewStations() {
+    const navigate = useNavigate()
+    const [stations, setStations] = useState([])
+    const ratePerHour = 220;
+
+    useEffect(() => {
+        axios.get(`http://localhost:4000/station/all-stations`)
+            .then(res => {
+                setStations(res.data.data)
+            })
+    }, [])
+    const openModal = (stationId) => {
+        setFormData({ ...formData, stationId });
+        setModalVisible(true);
+    };
+    const openCheckModal = (stationId) => {
+        setFormData({ ...formData, stationId });
+        setCheckModalVisible(true);
+    };
+    const [modalVisible, setModalVisible] = useState(false);
+    const [checkModalVisible, setCheckModalVisible] = useState(false);
+    const [checkAvailable, setCheckAvailable] = useState('');
+    const [today, setToday] = useState([]);
+    console.log(today);
+
+    const [formData, setFormData] = useState({
+        stationId: '',
+        date: '',
+        amount:'',
+        startTime: '',
+        endTime: '',
+        userLoginId: localStorage.getItem('login_id'),
+    });
+    console.log(formData);
+    
+
+    const [errors, setErrors] = useState({});
+    const closeModal = () => {
+        setModalVisible(false);
+        setFormData({
+            date: '',
+            startTime: '',
+            endTime: '',
+        });
+        setErrors({});
+    };
+    const convertTo12HourFormat = (time) => {
+        if (!time) return "";
+        const [hours, minutes] = time.split(":").map(Number);
+        const period = hours >= 12 ? "PM" : "AM";
+        const formattedHours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
+        return `${formattedHours}:${minutes.toString().padStart(2, "0")} ${period}`;
+    };
+
+    // Handle time change and format conversion
+    const handleTimeChange = (time, field) => {
+        setFormData((prev) => ({
+            ...prev,
+            [field]: time, // Store 24-hour format in the database
+        }));
+    };
+    const closeCheckModal = () => {
+        setCheckModalVisible(false);
+        setFormData({
+            date: '',
+            startTime: '',
+            endTime: '',
+        });
+        setErrors({});
+    };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (validateForm()) {
+            console.log('Form data submitted:', formData);
+            axios.post(`http://localhost:4000/booking/book-slot`, formData).then((res) => {
+                console.log(res);
+                toast.success(res.data.message);
+            }).catch((err) => {
+                console.log(err);
+                toast.error(err.response.data.message);
+
+            })
+            closeModal();
+        }
+    };
+    const handleCheckSubmit = async (e) => {
+        try {
+            e.preventDefault();
+            if (validateForm()) {
+                await axios.post(`http://localhost:4000/booking/check-availability`, formData).then((res) => {
+                    console.log(res.data.message);
+                    setCheckAvailable(res.data.message);
+                }).catch((err) => {
+                    console.log(err);
+
+                })
+                await axios.post(`http://localhost:4000/booking/todays-booking`, formData).then((res) => {
+                    console.log(res.data.data);
+                    setToday(res.data.data);
+                }).catch((err) => {
+                    console.log(err);
+
+                })
+                // closeModal();
+            }
+        } catch (error) {
+
+        }
+    };
+    const validateForm = () => {
+        const tempErrors = {};
+        if (!formData.date) tempErrors.date = 'Date is required.';
+        if (!formData.startTime) tempErrors.startTime = 'Start time is required.';
+        if (!formData.endTime) tempErrors.endTime = 'End time is required.';
+        if (formData.startTime >= formData.endTime) {
+            tempErrors.endTime = "End time must be after start time.";
+        }
+        setErrors(tempErrors);
+        return Object.keys(tempErrors).length === 0;
+    };
+
+    const [totalAmount, setTotalAmount] = useState(0);
+    useEffect(() => {
+        if (formData.startTime && formData.endTime) {
+            const start = new Date(`1970-01-01T${formData.startTime}:00`);
+            const end = new Date(`1970-01-01T${formData.endTime}:00`);
+
+            if (end > start) {
+                const duration = (end - start) / (1000 * 60 * 60);
+                console.log(duration);
+
+                setTotalAmount(duration * ratePerHour);
+                setFormData({ ...formData, amount:(duration * ratePerHour).toFixed(2) });
+            } else {
+                setTotalAmount(0);
+            }
+        }
+    }, [formData?.startTime, formData?.endTime])
+
+    return (
+        <>
+            <Toaster />
+            {/* Topbar Start */}
+            <div className="container-fluid bg-dark px-5 d-none d-lg-block">
+                <div className="row gx-0">
+                    <div className="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
+                        <div
+                            className="d-inline-flex align-items-center"
+                            style={{ height: 45 }}
+                        >
+                            <small className="me-3 text-light">
+                                <i className="fa fa-map-marker-alt me-2" />
+                                123 Street, New York, USA
+                            </small>
+                            <small className="me-3 text-light">
+                                <i className="fa fa-phone-alt me-2" />
+                                +012 345 6789
+                            </small>
+                            <small className="text-light">
+                                <i className="fa fa-envelope-open me-2" />
+                                info@example.com
+                            </small>
+                        </div>
+                    </div>
+                    <div className="col-lg-4 text-center text-lg-end">
+                        <div
+                            className="d-inline-flex align-items-center"
+                            style={{ height: 45 }}
+                        >
+                            <a
+                                className="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2"
+                                href=""
+                            >
+                                <i className="fab fa-twitter fw-normal" />
+                            </a>
+                            <a
+                                className="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2"
+                                href=""
+                            >
+                                <i className="fab fa-facebook-f fw-normal" />
+                            </a>
+                            <a
+                                className="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2"
+                                href=""
+                            >
+                                <i className="fab fa-linkedin-in fw-normal" />
+                            </a>
+                            <a
+                                className="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2"
+                                href=""
+                            >
+                                <i className="fab fa-instagram fw-normal" />
+                            </a>
+                            <a
+                                className="btn btn-sm btn-outline-light btn-sm-square rounded-circle"
+                                href=""
+                            >
+                                <i className="fab fa-youtube fw-normal" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* Topbar End */}
+            {/* Navbar & Hero Start */}
+            <div className="container-fluid position-relative p-0">
+                <Nav />
+                <div className="container-fluid bg-primary py-2 mb-5 hero-header" style={{
+                    height: '300px'
+                }}>
+                    <div className="container" style={{
+                        paddingTop: '-15px'
+                    }}>
+                        <div className="row justify-content-center py-5">
+                            <div className="col-lg-10 pt-lg-5 mt-lg-5 text-center">
+                                <h1 className="display-3 text-white animated slideInDown">
+                                    Stations
+                                </h1>
+                                <nav aria-label="breadcrumb">
+                                    <ol className="breadcrumb justify-content-center">
+                                        <li className="breadcrumb-item">
+                                            <a href="/">Home</a>
+                                        </li>
+                                        <li className="breadcrumb-item">
+                                            <a >All stations user</a>
+                                        </li>
+
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* Navbar & Hero End */}
+            {/* Service Start */}
+            <div className="container-xxl py-5">
+                <div className="container">
+
+                    <div className="row g-4">
+                        {stations.map((station) => (
+                            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
+                                <div class="service-item rounded pt-3" >
+                                    <div class="p-4 station-div" onClick={() => navigate(`/single-station/${station._id}`)}>
+                                        <i class="fa fa-3x fa-hotel text-primary mb-4"></i>
+                                        <p class="station-status" style={{ color: station.StationStatus === 'Active' ? '#2dd62d' : 'red' }}>{station.StationStatus}</p>
+                                        <h5>{station.StationName},&nbsp;{station.City}</h5>
+                                        <p>Connectors:&nbsp;{station.TypeofConnectors}</p>
+                                        <p>Power:&nbsp;{station.ChargingPower}</p>
+                                        <p>Working hours:&nbsp;{station.OperatingHours}</p>
+                                        <p>No of Ports:&nbsp;{station.ChargingPortsNo}</p>
+
+                                    </div>
+
+                                    <div className="manage-station-btns mb-5">
+                                        <button className='btn btn-success' style={{ width: '250px', marginBottom: '-45px' }} onClick={() => openCheckModal(station._id)}>Check Availability</button>
+                                        {/* <button className="btn btn-info" style={{ width: '250px', marginBottom: '20px' }} onClick={() => openModal(station._id)}>Book Now</button> */}
+                                    </div>
+                                    <div className="manage-station-btns mb-5">
+                                        {/* <button className='btn btn-success' onClick={() => handleEditStation(station._id)}>View</button> */}
+                                        <button className="btn btn-info" style={{ width: '250px', marginBottom: '20px' }} onClick={() => openModal(station._id)}>Book Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+
+
+                    </div>
+                </div>
+            </div>
+            {modalVisible && (
+                <div className="modal show d-block" tabIndex="-1">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Book Station</h5>
+                                <button type="button" className="btn-close" onClick={closeModal}></button>
+                            </div>
+                            <div className="modal-body">
+                                <form onSubmit={handleSubmit}>
+                                    <div className="mb-3">
+                                        <label htmlFor="date" className="form-label">Date</label>
+                                        <input
+                                            type="date"
+                                            className="form-control"
+                                            id="date"
+                                            value={formData.date}
+                                            onChange={(e) =>
+                                                setFormData({ ...formData, date: e.target.value })
+                                            }
+                                        />
+                                        {errors.date && <div className="text-danger">{errors.date}</div>}
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="startTime" className="form-label">Start Time</label>
+                                        <input
+                                            type="time"
+                                            className="form-control"
+                                            id="startTime"
+                                            value={formData.startTime}
+                                            onChange={(e) =>
+                                                handleTimeChange(e.target.value, "startTime")
+                                            }
+                                        />
+                                        <div className="text-muted">
+                                            Selected Start Time: {convertTo12HourFormat(formData.startTime)}
+                                        </div>
+                                        {errors.startTime && (
+                                            <div className="text-danger">{errors.startTime}</div>
+                                        )}
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="endTime" className="form-label">End Time</label>
+                                        <input
+                                            type="time"
+                                            className="form-control"
+                                            id="endTime"
+                                            value={formData.endTime}
+                                            onChange={(e) =>
+                                                handleTimeChange(e.target.value, "endTime")
+                                            }
+                                        />
+                                        <div className="text-muted">
+                                            Selected End Time: {convertTo12HourFormat(formData.endTime)}
+                                        </div>
+                                        {errors.endTime && (
+                                            <div className="text-danger">{errors.endTime}</div>
+                                        )}
+                                    </div>
+                                    <div className="mb-3">
+                                        <strong>Approximate Total Amount:</strong> ₹{totalAmount.toFixed(2)}
+                                    </div>
+
+                                    <button type="submit" className="btn btn-primary">Book Now</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            )}
+
+            {checkModalVisible && (
+                <div className="modal show d-block" tabIndex="-1">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Check Availability</h5>
+                                <button type="button" className="btn-close" onClick={closeCheckModal}></button>
+                            </div>
+                            <div className="modal-body">
+                                <form onSubmit={handleCheckSubmit}>
+
+                                    <div className="row">
+                                        <div className="mb-3 col-4">
+                                            <label htmlFor="date" className="form-label">Date</label>
+                                            <input type="date" className="form-control" id="date" value={formData.date} onChange={(e) => setFormData({ ...formData, date: e.target.value })} />
+                                            {errors.date && <div className="text-danger">{errors.date}</div>}
+                                        </div>
+                                        <div className="mb-3 col-4">
+                                            <label htmlFor="startTime" className="form-label">Start Time</label>
+                                            <input type="time" className="form-control" id="startTime" value={formData.startTime} onChange={(e) => setFormData({ ...formData, startTime: e.target.value })} />
+                                            {errors.startTime && <div className="text-danger">{errors.startTime}</div>}
+                                        </div>
+                                        <div className="mb-3 col-4">
+                                            <label htmlFor="endTime" className="form-label">End Time</label>
+                                            <input type="time" className="form-control" id="endTime" value={formData.endTime} onChange={(e) => setFormData({ ...formData, endTime: e.target.value })} />
+                                            {errors.endTime && <div className="text-danger">{errors.endTime}</div>}
+                                        </div>
+
+
+                                        <button type="submit" className="btn btn-primary">Check Now</button>
+
+                                    </div>
+                                </form>
+                                <h6 style={{ textAlign: "center", marginTop: "10px" }}>{checkAvailable ? checkAvailable : ""}</h6>
+                                <div className="row">
+                                    {today.map((item, index) => (
+                                        <div class="col-lg-4 col-sm-6 wow fadeInUp mt-5" data-wow-delay="0.3s">
+                                            <div style={{ backgroundColor: item.status === 'booked' ? '#ff000069' : item.status === 'ongoing' ? '#0050ff5c' : '', borderRadius: '10px' }} class="service-item rounded pt-1" >
+                                                <div class="p-2 station-div">
+                                                    <p>{item.status}</p>
+                                                    <p>{item.startTime}-{item.endTime}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Service End */}
+            {/* Testimonial Start */}
+
+            {/* Testimonial End */}
+            {/* Footer Start */}
+            <div
+                className="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn"
+                data-wow-delay="0.1s"
+            >
+                <div className="container py-5">
+                    <div className="row g-5">
+                        <div className="col-lg-3 col-md-6">
+                            <h4 className="text-white mb-3">Company</h4>
+                            <a className="btn btn-link" href="">
+                                About Us
+                            </a>
+                            <a className="btn btn-link" href="">
+                                Contact Us
+                            </a>
+                            <a className="btn btn-link" href="">
+                                Privacy Policy
+                            </a>
+                            <a className="btn btn-link" href="">
+                                Terms &amp; Condition
+                            </a>
+                            <a className="btn btn-link" href="">
+                                FAQs &amp; Help
+                            </a>
+                        </div>
+                        <div className="col-lg-3 col-md-6">
+                            <h4 className="text-white mb-3">Contact</h4>
+                            <p className="mb-2">
+                                <i className="fa fa-map-marker-alt me-3" />
+                                123 Street, New York, USA
+                            </p>
+                            <p className="mb-2">
+                                <i className="fa fa-phone-alt me-3" />
+                                +012 345 67890
+                            </p>
+                            <p className="mb-2">
+                                <i className="fa fa-envelope me-3" />
+                                info@example.com
+                            </p>
+                            <div className="d-flex pt-2">
+                                <a className="btn btn-outline-light btn-social" href="">
+                                    <i className="fab fa-twitter" />
+                                </a>
+                                <a className="btn btn-outline-light btn-social" href="">
+                                    <i className="fab fa-facebook-f" />
+                                </a>
+                                <a className="btn btn-outline-light btn-social" href="">
+                                    <i className="fab fa-youtube" />
+                                </a>
+                                <a className="btn btn-outline-light btn-social" href="">
+                                    <i className="fab fa-linkedin-in" />
+                                </a>
+                            </div>
+                        </div>
+                        <div className="col-lg-3 col-md-6">
+                            <h4 className="text-white mb-3">Gallery</h4>
+                            <div className="row g-2 pt-2">
+                                <div className="col-4">
+                                    <img
+                                        className="img-fluid bg-light p-1"
+                                        src="img/package-1.jpg"
+                                        alt=""
+                                    />
+                                </div>
+                                <div className="col-4">
+                                    <img
+                                        className="img-fluid bg-light p-1"
+                                        src="img/package-2.jpg"
+                                        alt=""
+                                    />
+                                </div>
+                                <div className="col-4">
+                                    <img
+                                        className="img-fluid bg-light p-1"
+                                        src="img/package-3.jpg"
+                                        alt=""
+                                    />
+                                </div>
+                                <div className="col-4">
+                                    <img
+                                        className="img-fluid bg-light p-1"
+                                        src="img/package-2.jpg"
+                                        alt=""
+                                    />
+                                </div>
+                                <div className="col-4">
+                                    <img
+                                        className="img-fluid bg-light p-1"
+                                        src="img/package-3.jpg"
+                                        alt=""
+                                    />
+                                </div>
+                                <div className="col-4">
+                                    <img
+                                        className="img-fluid bg-light p-1"
+                                        src="img/package-1.jpg"
+                                        alt=""
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-lg-3 col-md-6">
+                            <h4 className="text-white mb-3">Newsletter</h4>
+                            <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+                            <div className="position-relative mx-auto" style={{ maxWidth: 400 }}>
+                                <input
+                                    className="form-control border-primary w-100 py-3 ps-4 pe-5"
+                                    type="text"
+                                    placeholder="Your email"
+                                />
+                                <button
+                                    type="button"
+                                    className="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2"
+                                >
+                                    SignUp
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="container">
+                    <div className="copyright">
+                        <div className="row">
+                            <div className="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                                ©{" "}
+                                <a className="border-bottom" href="#">
+                                    Your Site Name
+                                </a>
+                                , All Right Reserved.
+                                {/*/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. *** /*/}
+                                Designed By{" "}
+                                <a className="border-bottom" href="https://htmlcodex.com">
+                                    HTML Codex
+                                </a>
+                            </div>
+                            <div className="col-md-6 text-center text-md-end">
+                                <div className="footer-menu">
+                                    <a href="">Home</a>
+                                    <a href="">Cookies</a>
+                                    <a href="">Help</a>
+                                    <a href="">FQAs</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Footer End */}
+            {/* Back to Top */}
+            <a href="#" className="btn btn-lg btn-primary btn-lg-square back-to-top">
+                <i className="bi bi-arrow-up" />
+            </a>
+            {/* JavaScript Libraries */}
+            {/* Template Javascript */}
+        </>
+    )
+}

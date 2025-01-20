@@ -1,0 +1,39 @@
+.wallet {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    width: 450px;
+    margin: 20px auto;
+    text-align: center;
+    background: #f9f9f9;
+}
+
+.wallet-card-info {
+    margin-bottom: 20px;
+}
+
+.wallet-transactions ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+.wallet-transactions li {
+    text-align: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.wallet-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.wallet-button:hover {
+    background-color: #0056b3;
+}
