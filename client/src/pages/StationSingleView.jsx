@@ -213,7 +213,7 @@ export default function StationSingleView() {
                         <div className="col-lg-4 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
                             <div className="d-flex justify-content-center">
                                 <div className="col-8 mb-5">
-                                    <button className="btn btn-primary w-100 py-3" type="submit">
+                                    <button onClick={()=>{window.location.href = `/stations`}} className="btn btn-primary w-100 py-3" type="submit">
                                         Book Now
                                     </button>
                                 </div>

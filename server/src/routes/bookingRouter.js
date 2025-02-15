@@ -6,10 +6,11 @@ const { default: mongoose } = require('mongoose');
 const booking = express.Router();
 
 booking.post('/todays-booking', async (req, res) => {
+  try {
     const { stationId, date } = req.body;
 
     const existingBooking = await bookingModel.find({
-        stationId,
+        stationId:new mongoose.Types.ObjectId(stationId),
         date,
     });
 
@@ -17,9 +18,13 @@ booking.post('/todays-booking', async (req, res) => {
         return res.status(200).json({ data: existingBooking });
     }
     return res.status(400).json({ message: 'No bookings' });
+  } catch (error) {
+    return res.status(500).json({ message: 'No data' });
+  }
 });
 
 booking.post('/check-availability', async (req, res) => {
+   try {
     const { stationId, date, startTime, endTime } = req.body;
     const existingBooking = await bookingModel.findOne({
         stationId,
@@ -38,6 +43,12 @@ booking.post('/check-availability', async (req, res) => {
         success: true,
         message: 'Slot is available.'
     });
+   } catch (error) {
+    return res.status(500).json({
+        success: false,
+        message: 'Internal server error.'
+    });
+   }
 });
 
 

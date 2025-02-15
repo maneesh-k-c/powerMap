@@ -3,7 +3,8 @@ import Nav from '../../components/Nav'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
-
+import './ticket.css'
+import Footer from '../../components/Footer';
 export default function UserViewStations() {
     const navigate = useNavigate()
     const [stations, setStations] = useState([])
@@ -27,18 +28,19 @@ export default function UserViewStations() {
     const [checkModalVisible, setCheckModalVisible] = useState(false);
     const [checkAvailable, setCheckAvailable] = useState('');
     const [today, setToday] = useState([]);
+    const [trigger, setTrigger] = useState();
     console.log(today);
 
     const [formData, setFormData] = useState({
         stationId: '',
         date: '',
-        amount:'',
+        amount: '',
         startTime: '',
         endTime: '',
         userLoginId: localStorage.getItem('login_id'),
     });
     console.log(formData);
-    
+
 
     const [errors, setErrors] = useState({});
     const closeModal = () => {
@@ -100,13 +102,7 @@ export default function UserViewStations() {
                     console.log(err);
 
                 })
-                await axios.post(`http://localhost:4000/booking/todays-booking`, formData).then((res) => {
-                    console.log(res.data.data);
-                    setToday(res.data.data);
-                }).catch((err) => {
-                    console.log(err);
 
-                })
                 // closeModal();
             }
         } catch (error) {
@@ -136,12 +132,27 @@ export default function UserViewStations() {
                 console.log(duration);
 
                 setTotalAmount(duration * ratePerHour);
-                setFormData({ ...formData, amount:(duration * ratePerHour).toFixed(2) });
+                setFormData({ ...formData, amount: (duration * ratePerHour).toFixed(2) });
             } else {
                 setTotalAmount(0);
             }
         }
     }, [formData?.startTime, formData?.endTime])
+
+
+    useEffect(() => {
+        const data = {
+            date: trigger,
+            stationId: formData.stationId
+        }
+        axios.post(`http://localhost:4000/booking/todays-booking`, data).then((res) => {
+            console.log(res.data.data);
+            setToday(res.data.data);
+        }).catch((err) => {
+            console.log(err);
+
+        })
+    }, [trigger])
 
     return (
         <>
@@ -361,7 +372,7 @@ export default function UserViewStations() {
                                     <div className="row">
                                         <div className="mb-3 col-4">
                                             <label htmlFor="date" className="form-label">Date</label>
-                                            <input type="date" className="form-control" id="date" value={formData.date} onChange={(e) => setFormData({ ...formData, date: e.target.value })} />
+                                            <input type="date" className="form-control" id="date" value={formData.date} onChange={(e) => { setFormData({ ...formData, date: e.target.value }); setTrigger(e.target.value) }} />
                                             {errors.date && <div className="text-danger">{errors.date}</div>}
                                         </div>
                                         <div className="mb-3 col-4">
@@ -383,14 +394,27 @@ export default function UserViewStations() {
                                 <h6 style={{ textAlign: "center", marginTop: "10px" }}>{checkAvailable ? checkAvailable : ""}</h6>
                                 <div className="row">
                                     {today.map((item, index) => (
-                                        <div class="col-lg-4 col-sm-6 wow fadeInUp mt-5" data-wow-delay="0.3s">
-                                            <div style={{ backgroundColor: item.status === 'booked' ? '#ff000069' : item.status === 'ongoing' ? '#0050ff5c' : '', borderRadius: '10px' }} class="service-item rounded pt-1" >
-                                                <div class="p-2 station-div">
-                                                    <p>{item.status}</p>
-                                                    <p>{item.startTime}-{item.endTime}</p>
+                                        <>
+                                            
+
+                                            <div className="coupon">
+                                                <div className="left">
+                                                    <div>Booking</div>
+                                                </div>
+                                                <div className="center">
+                                                    <div>
+                                                        <h2>{item.status}</h2>
+                                                        
+                                                        <small>start time : {item.startTime}</small><br />
+                                                        <small>End time : {item.endTime}</small>
+                                                    </div>
+                                                </div>
+                                                <div className="right">
+                                                    <div>&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                                 </div>
                                             </div>
-                                        </div>
+
+                                        </>
                                     ))}
                                 </div>
 
@@ -405,152 +429,7 @@ export default function UserViewStations() {
 
             {/* Testimonial End */}
             {/* Footer Start */}
-            <div
-                className="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn"
-                data-wow-delay="0.1s"
-            >
-                <div className="container py-5">
-                    <div className="row g-5">
-                        <div className="col-lg-3 col-md-6">
-                            <h4 className="text-white mb-3">Company</h4>
-                            <a className="btn btn-link" href="">
-                                About Us
-                            </a>
-                            <a className="btn btn-link" href="">
-                                Contact Us
-                            </a>
-                            <a className="btn btn-link" href="">
-                                Privacy Policy
-                            </a>
-                            <a className="btn btn-link" href="">
-                                Terms &amp; Condition
-                            </a>
-                            <a className="btn btn-link" href="">
-                                FAQs &amp; Help
-                            </a>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <h4 className="text-white mb-3">Contact</h4>
-                            <p className="mb-2">
-                                <i className="fa fa-map-marker-alt me-3" />
-                                123 Street, New York, USA
-                            </p>
-                            <p className="mb-2">
-                                <i className="fa fa-phone-alt me-3" />
-                                +012 345 67890
-                            </p>
-                            <p className="mb-2">
-                                <i className="fa fa-envelope me-3" />
-                                info@example.com
-                            </p>
-                            <div className="d-flex pt-2">
-                                <a className="btn btn-outline-light btn-social" href="">
-                                    <i className="fab fa-twitter" />
-                                </a>
-                                <a className="btn btn-outline-light btn-social" href="">
-                                    <i className="fab fa-facebook-f" />
-                                </a>
-                                <a className="btn btn-outline-light btn-social" href="">
-                                    <i className="fab fa-youtube" />
-                                </a>
-                                <a className="btn btn-outline-light btn-social" href="">
-                                    <i className="fab fa-linkedin-in" />
-                                </a>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <h4 className="text-white mb-3">Gallery</h4>
-                            <div className="row g-2 pt-2">
-                                <div className="col-4">
-                                    <img
-                                        className="img-fluid bg-light p-1"
-                                        src="img/package-1.jpg"
-                                        alt=""
-                                    />
-                                </div>
-                                <div className="col-4">
-                                    <img
-                                        className="img-fluid bg-light p-1"
-                                        src="img/package-2.jpg"
-                                        alt=""
-                                    />
-                                </div>
-                                <div className="col-4">
-                                    <img
-                                        className="img-fluid bg-light p-1"
-                                        src="img/package-3.jpg"
-                                        alt=""
-                                    />
-                                </div>
-                                <div className="col-4">
-                                    <img
-                                        className="img-fluid bg-light p-1"
-                                        src="img/package-2.jpg"
-                                        alt=""
-                                    />
-                                </div>
-                                <div className="col-4">
-                                    <img
-                                        className="img-fluid bg-light p-1"
-                                        src="img/package-3.jpg"
-                                        alt=""
-                                    />
-                                </div>
-                                <div className="col-4">
-                                    <img
-                                        className="img-fluid bg-light p-1"
-                                        src="img/package-1.jpg"
-                                        alt=""
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <h4 className="text-white mb-3">Newsletter</h4>
-                            <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                            <div className="position-relative mx-auto" style={{ maxWidth: 400 }}>
-                                <input
-                                    className="form-control border-primary w-100 py-3 ps-4 pe-5"
-                                    type="text"
-                                    placeholder="Your email"
-                                />
-                                <button
-                                    type="button"
-                                    className="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2"
-                                >
-                                    SignUp
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="container">
-                    <div className="copyright">
-                        <div className="row">
-                            <div className="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                                ©{" "}
-                                <a className="border-bottom" href="#">
-                                    Your Site Name
-                                </a>
-                                , All Right Reserved.
-                                {/*/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. *** /*/}
-                                Designed By{" "}
-                                <a className="border-bottom" href="https://htmlcodex.com">
-                                    HTML Codex
-                                </a>
-                            </div>
-                            <div className="col-md-6 text-center text-md-end">
-                                <div className="footer-menu">
-                                    <a href="">Home</a>
-                                    <a href="">Cookies</a>
-                                    <a href="">Help</a>
-                                    <a href="">FQAs</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Footer/>
 
             {/* Footer End */}
             {/* Back to Top */}

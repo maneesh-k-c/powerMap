@@ -17,7 +17,7 @@ export default function Nav() {
                     <a href="" className="navbar-brand p-0">
                         <h1 className="text-primary m-0">
                             <i className="fa fa-map-marker-alt me-3" />
-                            Tourist
+                            PowerMap    
                         </h1>
                         {/* <img src="img/logo.png" alt="Logo"> */}
                     </a>
@@ -34,15 +34,15 @@ export default function Nav() {
                             <a href="/" className="nav-item nav-link active">
                                 Home
                             </a>
-                            <a href="/all-owners" className="nav-item nav-link">
+                            {/* <a href="/all-owners" className="nav-item nav-link">
                                 Stations
-                            </a>
-                            <a href="/all-users" className="nav-item nav-link">
+                            </a> */}
+                            {/* <a href="" className="nav-item nav-link">
                                 Users
-                            </a>
-                            <a href="/feedbacks" className="nav-item nav-link">
+                            </a> */}
+                            {/* <a href="/feedbacks" className="nav-item nav-link">
                             Feedbacks
-                            </a>
+                            </a> */}
 
                            
                         </div>
@@ -59,7 +59,7 @@ export default function Nav() {
                         <a href="" className="navbar-brand p-0">
                             <h1 className="text-primary m-0">
                                 <i className="fa fa-map-marker-alt me-3" />
-                                Tourist
+                                PowerMap
                             </h1>
                             {/* <img src="img/logo.png" alt="Logo"> */}
                         </a>
@@ -122,7 +122,7 @@ export default function Nav() {
                             <a href="" className="navbar-brand p-0">
                                 <h1 className="text-primary m-0">
                                     <i className="fa fa-map-marker-alt me-3" />
-                                    Tourist
+                                    PowerMap
                                 </h1>
                                 {/* <img src="img/logo.png" alt="Logo"> */}
                             </a>

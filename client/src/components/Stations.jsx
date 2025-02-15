@@ -38,7 +38,7 @@ export default function Stations() {
                                  </div>
                                  <div className='manage-station-btns mb-5' >
                                          {/* <button className='btn btn-success' onClick={() => handleEditStation(station._id)}>View</button> */}
-                                         <button className='btn btn-info' style={{width:'250px', marginBottom:'20px'}}>Book Now</button>
+                                         <button className='btn btn-info' onClick={()=>{window.location.href='/stations'}} style={{width:'250px', marginBottom:'20px'}}>Book Now</button>
                                      </div>
                              </div>
                          </div>
