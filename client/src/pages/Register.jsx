@@ -132,10 +132,10 @@ export default function Register() {
             <div className="row justify-content-center ">
               <div className="col-lg-10 pt-lg-5 text-center">
                 <h1 className="display-3 mt-0 text-white animated slideInDown">
-                  {isUserRegistration ? 'User Registration' : 'Station Registration'}
+                  {isUserRegistration ? 'User Registration' : 'Station Owner Registration'}
                 </h1>
                 <a href="#" onClick={toggleForm} className="text-white">
-                  {isUserRegistration ? 'Not a User ? Switch to Station Registration.' : 'Are You a User Switch to User Registration?'}
+                  {isUserRegistration ? 'Not a User ? Switch to Station Owner Registration.' : 'Are You a User Switch to User Registration?'}
                 </a>
               </div>
               <div className="col-lg-4 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
