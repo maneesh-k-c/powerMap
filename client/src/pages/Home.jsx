@@ -23,7 +23,7 @@ export default function Home() {
         <>
 
             {/* Navbar & Hero Start */}
-            <Header />
+            {/* <Header /> */}
             {role === 'admin' ?
                 <>
                     <div className="container-fluid position-relative p-0">

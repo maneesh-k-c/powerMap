@@ -107,7 +107,9 @@ export default function Profile() {
                             </>
                         ) : null}
                     </div>
-                    <a href="#" className="profile-button">Update</a>
+                    {role === 'user' ?
+                <a href="/update-profile" className="profile-button">Update</a>:''    
+                }
                 </div>
                 {role == 'user' ?
                     <div className="wallet">

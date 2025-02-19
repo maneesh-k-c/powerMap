@@ -488,6 +488,50 @@ authRouter.get('/getProfile/:id/:role', async (req, res) => {
     }
 });
 
+authRouter.put('/update_profile/:id', async (req, res) => {
+    try {
+        const objectId = req.params.id;
+        const previousData = await userModel.findOne({ _id: objectId });
+
+        if (!previousData) {
+            return res.status(404).json({ Success: false, Message: 'User not found' });
+        }
+
+        const updateData = {
+            login_id: previousData.login_id,
+            name: req.body.Name || previousData.name,
+            email: req.body.Email || previousData.email,
+            phoneNumber: req.body.PhoneNumber || previousData.phoneNumber,
+            state: req.body.State || previousData.state,
+            district: req.body.District || previousData.district,
+        };
+
+        const Data = await userModel.updateOne({ _id: objectId }, { $set: updateData });
+
+        const updateLogin = {
+            username: req.body.Username || previousData.username,
+            password: req.body.Password || previousData.password
+        };
+
+        await loginModel.updateOne({ _id: previousData.login_id }, { $set: updateLogin });
+
+        if (Data.modifiedCount === 1) {
+            return res.status(200).json({
+                Success: true,
+                Message: 'Profile updated successfully',
+            });
+        } else {
+            return res.status(400).json({
+                Success: false,
+                Message: 'Failed while updating profile',
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ Success: false, Message: 'Something went wrong' });
+    }
+});
+
 
 module.exports = authRouter;
 

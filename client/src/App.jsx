@@ -19,6 +19,7 @@ import MyBookings from './pages/user/MyBookings'
 import StationBookings from './pages/owner/StationBookings'
 import ViewTransactions from './pages/user/ViewTransactions'
 import Payment from './pages/user/Payment'
+import UpdateProfile from './pages/user/UpdateProfile'
 
 function App() {
 
@@ -48,6 +49,7 @@ function App() {
         <Route path='/my-booking' element={<MyBookings/>} />     
         <Route path='/view-transaction' element={<ViewTransactions/>} />     
         <Route path='/payment' element={<Payment/>} />     
+        <Route path='/update-profile' element={<UpdateProfile/>} />     
       </Routes>
     </BrowserRouter>
   )
