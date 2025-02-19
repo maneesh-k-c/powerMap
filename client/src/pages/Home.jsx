@@ -131,77 +131,10 @@ export default function Home() {
                     </div>
                     {/* Navbar & Hero End */}
                     {/* About Start */}
-                    <div className="container-xxl py-5" id='about'>
-                        <div className="container">
-                            <div className="row g-5">
-                                <div
-                                    className="col-lg-6 wow fadeInUp"
-                                    data-wow-delay="0.1s"
-                                    style={{ minHeight: 400 }}
-                                >
-                                    <div className="position-relative h-100">
-                                        <img
-                                            className="img-fluid position-absolute w-100 h-100"
-                                            src="img/about.jpg"
-                                            alt=""
-                                            style={{ objectFit: "cover" }}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
-                                    <h6 className="section-title bg-white text-start text-primary pe-3">
-                                        About Us
-                                    </h6>
-                                    <h1 className="mb-4">
-                                        Welcome to <span className="text-primary">PowerMap</span>
-                                    </h1>
-                                    <p className="mb-4">
-                                    PowerMap is your go-to platform for seamless EV charging slot booking. We connect EV owners with verified charging stations, making it easy to find, book, and manage slots in real-time.
-                                    </p>
-                                    <p className="mb-4">
-                                    With a user-friendly interface, secure transactions, and live availability updates, we ensure a hassle-free charging experience. Our mission is to drive the shift toward sustainable mobility by making EV charging smarter and more efficient.
-                                    </p>
-                                    <div className=" gy-2 gx-4 mb-4">
-                                        <div className="col-sm-6">
-                                            <p className="mb-0">
-                                                <i className="fa fa-arrow-right text-primary me-2" />
-                                                Fast Charging
-                                            </p>
-                                        </div>
-                                        <div className="col-sm-6">
-                                            <p className="mb-0">
-                                                <i className="fa fa-arrow-right text-primary me-2" />
-                                                Easy to use
-                                            </p>
-                                        </div>
-                                        <div className="col-sm-6">
-                                            <p className="mb-0">
-                                                <i className="fa fa-arrow-right text-primary me-2" />5 Star
-                                                Accessible to everyone
-                                            </p>
-                                        </div>
-                                        <div className="col-sm-6">
-                                            <p className="mb-0">
-                                                <i className="fa fa-arrow-right text-primary me-2" />
-                                                Latest  Model Chargers
-                                            </p>
-                                        </div>
-                                       
-                                        <div className="col-sm-6">
-                                            <p className="mb-0">
-                                                <i className="fa fa-arrow-right text-primary me-2" />
-                                                24/7 Service
-                                            </p>
-                                        </div>
-                                    </div>
-                                   
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
 
 
-                     <div className="container-xxl py-5" id='about'>
+                     <div className="container-xxl py-5" >
                         <div className="container">
                             <div className="row g-5">
                             <div className="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
@@ -261,7 +194,7 @@ export default function Home() {
                     {/* Stations End */}
                    
                     {/* Destination Start */}
-                    <div className="container-xxl py-5 destination">
+                    {/* <div className="container-xxl py-5 destination">
                         <div className="container">
                             <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
                                 <h6 className="section-title bg-white text-center text-primary px-3">
@@ -341,7 +274,7 @@ export default function Home() {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     {/* Destination Start */}
                  
 
@@ -364,14 +297,13 @@ export default function Home() {
                                             className="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle position-absolute top-0 start-50 translate-middle shadow"
                                             style={{ width: 100, height: 100 }}
                                         >
-                                            <i className="fa fa-globe fa-3x text-white" />
+                                            <i className="fa fa-search fa-3x text-white" />
                                         </div>
-                                        <h5 className="mt-4">Choose A Destination</h5>
+                                        <h5 className="mt-4">Find</h5>
                                         <hr className="w-25 mx-auto bg-primary mb-1" />
                                         <hr className="w-50 mx-auto bg-primary mt-0" />
                                         <p className="mb-0">
-                                            Tempor erat elitr rebum clita dolor diam ipsum sit diam amet diam
-                                            eos erat ipsum et lorem et sit sed stet lorem sit
+                                        Find the nearest charging station with ease using our intuitive map, ensuring you're never far from a reliable power source.
                                         </p>
                                     </div>
                                 </div>
@@ -384,14 +316,13 @@ export default function Home() {
                                             className="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle position-absolute top-0 start-50 translate-middle shadow"
                                             style={{ width: 100, height: 100 }}
                                         >
-                                            <i className="fa fa-dollar-sign fa-3x text-white" />
+                                            <i className="fa fa-address-book fa-3x text-white" />
                                         </div>
-                                        <h5 className="mt-4">Pay Online</h5>
+                                        <h5 className="mt-4">Book Online </h5>
                                         <hr className="w-25 mx-auto bg-primary mb-1" />
                                         <hr className="w-50 mx-auto bg-primary mt-0" />
                                         <p className="mb-0">
-                                            Tempor erat elitr rebum clita dolor diam ipsum sit diam amet diam
-                                            eos erat ipsum et lorem et sit sed stet lorem sit
+                                        Book your charging spot in advance to avoid unnecessary wait times and ensure a smooth experience when you arrive.
                                         </p>
                                     </div>
                                 </div>
@@ -404,14 +335,13 @@ export default function Home() {
                                             className="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle position-absolute top-0 start-50 translate-middle shadow"
                                             style={{ width: 100, height: 100 }}
                                         >
-                                            <i className="fa fa-plane fa-3x text-white" />
+                                            <i className="fa fa-plug fa-3x text-white" />
                                         </div>
-                                        <h5 className="mt-4">Fly Today</h5>
+                                        <h5 className="mt-4">Charge</h5>
                                         <hr className="w-25 mx-auto bg-primary mb-1" />
                                         <hr className="w-50 mx-auto bg-primary mt-0" />
                                         <p className="mb-0">
-                                            Tempor erat elitr rebum clita dolor diam ipsum sit diam amet diam
-                                            eos erat ipsum et lorem et sit sed stet lorem sit
+                                        Charge your vehicle or device efficiently, knowing that Powermap connects you to a trusted and expanding network of charging stations.
                                         </p>
                                     </div>
                                 </div>
@@ -419,6 +349,75 @@ export default function Home() {
                         </div>
                     </div>
                     {/* Process Start */}
+
+                    <div className="container-xxl py-5" id='about'>
+                        <div className="container">
+                            <div className="row g-5">
+                                <div
+                                    className="col-lg-6 wow fadeInUp"
+                                    data-wow-delay="0.1s"
+                                    style={{ minHeight: 400 }}
+                                >
+                                    <div className="position-relative h-100">
+                                        <img
+                                            className="img-fluid position-absolute w-100 h-100"
+                                            src="img/about.jpg"
+                                            alt=""
+                                            style={{ objectFit: "cover" }}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
+                                    <h6 className="section-title bg-white text-start text-primary pe-3">
+                                        About Us
+                                    </h6>
+                                    <h1 className="mb-4">
+                                        Welcome to <span className="text-primary">PowerMap</span>
+                                    </h1>
+                                    <p className="mb-4">
+                                    PowerMap is your go-to platform for seamless EV charging slot booking. We connect EV owners with verified charging stations, making it easy to find, book, and manage slots in real-time.
+                                    </p>
+                                    <p className="mb-4">
+                                    With a user-friendly interface, secure transactions, and live availability updates, we ensure a hassle-free charging experience. Our mission is to drive the shift toward sustainable mobility by making EV charging smarter and more efficient.
+                                    </p>
+                                    <div className=" gy-2 gx-4 mb-4">
+                                        <div className="col-sm-6">
+                                            <p className="mb-0">
+                                                <i className="fa fa-arrow-right text-primary me-2" />
+                                                Fast Charging
+                                            </p>
+                                        </div>
+                                        <div className="col-sm-6">
+                                            <p className="mb-0">
+                                                <i className="fa fa-arrow-right text-primary me-2" />
+                                                Easy to use
+                                            </p>
+                                        </div>
+                                        <div className="col-sm-6">
+                                            <p className="mb-0">
+                                                <i className="fa fa-arrow-right text-primary me-2" />5 Star
+                                                Accessible to everyone
+                                            </p>
+                                        </div>
+                                        <div className="col-sm-6">
+                                            <p className="mb-0">
+                                                <i className="fa fa-arrow-right text-primary me-2" />
+                                                Latest  Model Chargers
+                                            </p>
+                                        </div>
+                                       
+                                        <div className="col-sm-6">
+                                            <p className="mb-0">
+                                                <i className="fa fa-arrow-right text-primary me-2" />
+                                                24/7 Service
+                                            </p>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </>}
             {/* Footer Start */}

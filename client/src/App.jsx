@@ -18,6 +18,7 @@ import UserViewStations from './pages/user/UserViewStations'
 import MyBookings from './pages/user/MyBookings'
 import StationBookings from './pages/owner/StationBookings'
 import ViewTransactions from './pages/user/ViewTransactions'
+import Payment from './pages/user/Payment'
 
 function App() {
 
@@ -46,6 +47,7 @@ function App() {
         <Route path='/stations' element={<UserViewStations/>} />     
         <Route path='/my-booking' element={<MyBookings/>} />     
         <Route path='/view-transaction' element={<ViewTransactions/>} />     
+        <Route path='/payment' element={<Payment/>} />     
       </Routes>
     </BrowserRouter>
   )
