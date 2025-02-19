@@ -14,7 +14,7 @@ export default function Nav() {
         <>
             {role == "admin" ?
                 <nav className="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-                    <a href="" className="navbar-brand p-0">
+                    <a href="/" className="navbar-brand p-0">
                         <h1 className="text-primary m-0">
                             <i className="fa fa-map-marker-alt me-3" />
                             PowerMap    
@@ -31,7 +31,7 @@ export default function Nav() {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarCollapse">
                         <div className="navbar-nav ms-auto py-0">
-                            <a href="/" className="nav-item nav-link active">
+                            <a href="/" className="nav-item nav-link ">
                                 Home
                             </a>
                             {/* <a href="/all-owners" className="nav-item nav-link">
@@ -56,7 +56,7 @@ export default function Nav() {
                 : role == 'user' ?
 
                     <nav className="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-                        <a href="" className="navbar-brand p-0">
+                        <a href="/" className="navbar-brand p-0">
                             <h1 className="text-primary m-0">
                                 <i className="fa fa-map-marker-alt me-3" />
                                 PowerMap
@@ -73,7 +73,7 @@ export default function Nav() {
                         </button>
                         <div className="collapse navbar-collapse" id="navbarCollapse">
                             <div className="navbar-nav ms-auto py-0">
-                                <a href="/" className="nav-item nav-link active">
+                                <a href="/" className="nav-item nav-link ">
                                     Home
                                 </a>
                                 <a href="/stations" className="nav-item nav-link">
@@ -119,7 +119,7 @@ export default function Nav() {
                     : role == 'company' ?
 
                         <nav className="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-                            <a href="" className="navbar-brand p-0">
+                            <a href="/" className="navbar-brand p-0">
                                 <h1 className="text-primary m-0">
                                     <i className="fa fa-map-marker-alt me-3" />
                                     PowerMap
@@ -136,7 +136,7 @@ export default function Nav() {
                             </button>
                             <div className="collapse navbar-collapse" id="navbarCollapse">
                                 <div className="navbar-nav ms-auto py-0">
-                                    <a href="/" className="nav-item nav-link active">
+                                    <a href="/" className="nav-item nav-link ">
                                         Home
                                     </a>
                                     <div className="nav-item dropdown">
@@ -195,7 +195,7 @@ export default function Nav() {
                             </button>
                             <div className="collapse navbar-collapse" id="navbarCollapse">
                                 <div className="navbar-nav ms-auto py-0">
-                                    <a href="/" className="nav-item nav-link active">
+                                    <a href="/" className="nav-item nav-link ">
                                         Home
                                     </a>
                                     <a href="#about" className="nav-item nav-link">

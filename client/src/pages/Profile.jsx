@@ -3,6 +3,7 @@ import Nav from '../components/Nav';
 import axios from 'axios';
 import './profile.css';
 import Footer from '../components/Footer';
+import { useNavigate } from 'react-router-dom';
 
 export default function Profile() {
     const [profile, setProfile] = useState([]);
@@ -12,6 +13,7 @@ export default function Profile() {
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({ amount: '', upiUrl: '' });
     const [errors, setErrors] = useState({});
+    const navigate =useNavigate()
     console.log(walletData);
 
     useEffect(() => {
@@ -31,9 +33,7 @@ export default function Profile() {
         if (!formData.amount || isNaN(formData.amount) || formData.amount <= 0) {
             newErrors.amount = 'Please enter a valid amount.';
         }
-        if (!formData.upiUrl || !formData.upiUrl.startsWith('upi://pay')) {
-            newErrors.upiUrl = 'Please enter a valid UPI URL.';
-        }
+        
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -43,19 +43,20 @@ export default function Profile() {
         if (!validateForm()) return;
 
         try {
-            await axios.post('http://localhost:4000/wallet/wallet/credit', {
-                userLoginId: login_id,
-                amount: formData.amount,
-                upiUrl: formData.upiUrl,
-            });
-           await axios.get(`http://localhost:4000/wallet/wallet/${login_id}`)
-            .then((res) => {
-                setWallet(res.data.wallet);
-            });
-            alert('Payment request sent successfully!');
-            window.location.href = formData.upiUrl; // Redirect to UPI URL for payment
-            setShowModal(false);
-            setFormData({ amount: '', upiUrl: '' });
+            localStorage.setItem('amount', formData.amount);
+            navigate('/payment');
+            // await axios.post('http://localhost:4000/wallet/wallet/credit', {
+            //     userLoginId: login_id,
+            //     amount: formData.amount
+            // });
+        //    await axios.get(`http://localhost:4000/wallet/wallet/${login_id}`)
+        //     .then((res) => {
+        //         setWallet(res.data.wallet);
+        //     });
+        //     alert('Payment request sent successfully!');
+        //     window.location.href = formData.upiUrl; // Redirect to UPI URL for payment
+        //     setShowModal(false);
+        //     setFormData({ amount: '', upiUrl: '' });
         } catch (error) {
             console.error('Error processing payment:', error);
             alert('Failed to process payment. Please try again.');
@@ -147,19 +148,9 @@ export default function Profile() {
                                         />
                                         {errors.amount && <div className="invalid-feedback">{errors.amount}</div>}
                                     </div>
-                                    <div className="mb-3">
-                                        <label className="form-label">UPI URL</label>
-                                        <input
-                                            type="text"
-                                            className={`form-control ${errors.upiUrl ? 'is-invalid' : ''}`}
-                                            value={formData.upiUrl}
-                                            onChange={(e) => setFormData({ ...formData, upiUrl: e.target.value })}
-                                        />
-                                        {errors.upiUrl && <div className="invalid-feedback">{errors.upiUrl}</div>}
-                                    </div>
+                                   
                                 </div>
                                 <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>Close</button>
                                     <button type="submit" className="btn btn-primary">Submit</button>
                                 </div>
                             </form>
