@@ -45,7 +45,7 @@ export default function MyBookings() {
         <>
 <Toaster/>
             {/* Topbar Start */}
-            <div className="container-fluid bg-dark px-5 d-none d-lg-block">
+            {/* <div className="container-fluid bg-dark px-5 d-none d-lg-block">
                 <div className="row gx-0">
                     <div className="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
                         <div
@@ -104,7 +104,7 @@ export default function MyBookings() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
             {/* Topbar End */}
             {/* Navbar & Hero Start */}
             <div className="container-fluid position-relative p-0">

@@ -152,7 +152,7 @@ export default function Nav() {
                                                 Add station
                                             </a>
                                             <a href="/view-stations" className="dropdown-item">
-                                                View stations
+                                                Manage stations
                                             </a>
                                         </div>
                                     </div>
