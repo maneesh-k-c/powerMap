@@ -122,6 +122,7 @@ authRouter.post('/chargingstationregistration', (req, res) => {
             OperatingHours: req.body.OperatingHours,
             ChargingRate: req.body.ChargingRate,
             Address: req.body.Address,
+            location_url: req.body.location_url,
             StationStatus: req.body.StationStatus,
         };
         console.log(chargingstationdata);

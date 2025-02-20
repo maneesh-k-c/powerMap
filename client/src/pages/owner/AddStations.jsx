@@ -16,7 +16,8 @@ export default function AddStations() {
         OperatingHours: '',
         ChargingRate: '',
         StationStatus: '',
-        Address: ''
+        Address: '',
+        location_url:''
     });
 
     console.log(formData);
@@ -39,6 +40,7 @@ export default function AddStations() {
 
         if (!formData.StationName) newErrors.StationName = 'Station Name is required';
         if (!formData.City) newErrors.City = 'City Name is required';
+        if (!formData.location_url) newErrors.location_url = 'Location Url  is required';
         if (!formData.ChargingPortsNo) {
             newErrors.ChargingPortsNo = 'Charging Ports No is required';
         } else if (isNaN(formData.ChargingPortsNo)) {
@@ -148,6 +150,22 @@ export default function AddStations() {
                                             />
                                             <label htmlFor="StationName">City Name</label>
                                             {errors.City && <small className="text-danger">{errors.City}</small>}
+                                        </div>
+                                    </div>
+                                    <div key="City" className="col-md-6">
+                                        <div className="form-floating">
+                                            <input
+                                                type="text"
+                                                onClick={clear}
+                                                className="form-control"
+                                                id="City"
+                                                name="location_url"
+                                                value={formData.location_url}
+                                                onChange={handleChange}
+                                                placeholder="Url"
+                                            />
+                                            <label htmlFor="StationName">Location url</label>
+                                            {errors.location_url && <small className="text-danger">{errors.location_url}</small>}
                                         </div>
                                     </div>
                                     {[
