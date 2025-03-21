@@ -166,6 +166,8 @@ export default function Register() {
                             className={`form-control ${userErrors.PhoneNumber ? 'is-invalid' : ''}`}
                             id="userName"
                             name="PhoneNumber"
+                            maxLength={10} // Restrict input to 10 characters
+                            pattern="\d{10}" // Ensure only 10 digits
                             placeholder="PhoneNumber"
                             value={userForm.PhoneNumber}
                             onChange={handleUserChange}
@@ -295,6 +297,8 @@ export default function Register() {
                             className={`form-control ${stationErrors.PhoneNumber ? 'is-invalid' : ''}`}
                             id="stationMobile"
                             name="PhoneNumber"
+                            maxLength={10} // Restrict input to 10 characters
+                            pattern="\d{10}" // Ensure only 10 digits
                             placeholder="PhoneNumber"
                             value={stationForm.PhoneNumber}
                             onChange={handleStationChange}

@@ -3,9 +3,122 @@ const userModel = require('../models/userModel');
 const loginModel = require('../models/loginModel');
 const ownerModel = require('../models/ownerModel');
 const stationModel = require('../models/stationModel');
+const nodemailer = require("nodemailer");
+const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: "maneesh.maitexa@gmail.com",
+      pass: "ykqo knrf pcsh wrkp",
+    },
+  });
 
 const authRouter = express.Router();
 
+authRouter.post("/send-otp", async (req, res) => {
+    try {
+      const { email } = req.body; // Get recipient email from request body
+      if (!email) {
+        return res.status(400).json({
+          success: false,
+          message: "Email is required",
+        });
+      }
+  
+      // Generate a random 4-digit OTP
+      const otp = Math.floor(1000 + Math.random() * 9000);
+  
+      // Email configuration
+      const mailOptions = {
+        from: "powermap@gmail.com",
+        to: email,
+        subject: "Your OTP Code",
+        text: `Your OTP code for rest-password is: ${otp}`,
+      };
+  
+      // Send email
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error("Error sending email: ", error);
+          return res.status(500).json({
+            success: false,
+            message: "Failed to send OTP",
+          });
+        } else {
+          console.log("Email sent: ", info.response);
+          return res.status(200).json({
+            success: true,
+            message: "OTP sent successfully",
+            otp, // For debugging, remove in production
+          });
+        }
+      });
+    } catch (error) {
+      console.error("Internal Server Error: ", error);
+      return res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
+  });
+
+  authRouter.post("/changePassword", async (req, res) => {
+    try {
+      const { email,password } = req.body; // Get recipient email from request body
+      if (!email) {
+        return res.status(400).json({
+          success: false,
+          message: "Email is required",
+        });
+      }
+  
+     const userEmailFound =  await userModel.findOne({email:email})
+     const ownerEmailFound =  await ownerModel.findOne({email:email})
+
+     if(userEmailFound){
+        const log = userEmailFound.login_id
+        const update = await loginModel.updateOne({_id:log},{$set:{password:password}}) 
+        if(update.modifiedCount==1){
+            return res.status(200).json({
+                success: true,
+                message: "password changed",
+              });
+        }else{
+            return res.status(400).json({
+                success: false,
+                message: "Error ",
+              });
+        }
+     }
+     if(ownerEmailFound){
+        const log = ownerEmailFound.login_id
+        const update = await loginModel.updateOne({_id:log},{$set:{password:password}}) 
+        if(update.modifiedCount==1){
+            return res.status(200).json({
+                success: true,
+                message: "password changed",
+              });
+        }else{
+            return res.status(400).json({
+                success: false,
+                message: "Error ",
+              });
+        }
+     }
+  
+      
+    
+      
+    } catch (error) {
+      console.error("Internal Server Error: ", error);
+      return res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
+  });  
 
 authRouter.post('/userregistration', async (req, res) => {
     try {

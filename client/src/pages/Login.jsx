@@ -104,6 +104,9 @@ export default function Login() {
                     <div className="text-center mt-3">
                       <a href="/register" className="text-white">
                         Don't have an account?
+                      </a> <br />
+                      <a href="/forgot-password" className="text-white">
+                        Forgot Password?
                       </a>
                     </div>
                   </div>

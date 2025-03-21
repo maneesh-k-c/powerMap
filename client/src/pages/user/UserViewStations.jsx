@@ -240,6 +240,7 @@ export default function UserViewStations() {
                                         <label htmlFor="date" className="form-label">Date</label>
                                         <input
                                             type="date"
+                                            min={new Date().toISOString().split("T")[0]}
                                             className="form-control"
                                             id="date"
                                             value={formData.date}
@@ -313,7 +314,7 @@ export default function UserViewStations() {
                                     <div className="row">
                                         <div className="mb-3 col-4">
                                             <label htmlFor="date" className="form-label">Date</label>
-                                            <input type="date" className="form-control" id="date" value={formData.date} onChange={(e) => { setFormData({ ...formData, date: e.target.value }); setTrigger(e.target.value) }} />
+                                            <input type="date" min={new Date().toISOString().split("T")[0]} className="form-control" id="date" value={formData.date} onChange={(e) => { setFormData({ ...formData, date: e.target.value }); setTrigger(e.target.value) }} />
                                             {errors.date && <div className="text-danger">{errors.date}</div>}
                                         </div>
                                         <div className="mb-3 col-4">

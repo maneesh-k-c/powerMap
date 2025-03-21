@@ -31,7 +31,8 @@ booking.post('/check-availability', async (req, res) => {
         date,
         $or: [
             { startTime: { $lt: endTime }, endTime: { $gt: startTime } }, // Partial overlap
-        ]
+        ],
+        status: { $ne: "cancelled" }
     });
     if (existingBooking) {
         return res.status(200).json({
@@ -61,7 +62,8 @@ booking.post('/book-slot', async (req, res) => {
         date,
         $or: [
             { startTime: { $lt: endTime }, endTime: { $gt: startTime } }, // Partial overlap
-        ]
+        ],
+        status: { $ne: "cancelled" }
     });
 
     if (existingBooking) {

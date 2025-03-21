@@ -20,6 +20,7 @@ import StationBookings from './pages/owner/StationBookings'
 import ViewTransactions from './pages/user/ViewTransactions'
 import Payment from './pages/user/Payment'
 import UpdateProfile from './pages/user/UpdateProfile'
+import Forgot from './pages/Forgot'
 
 function App() {
 
@@ -50,6 +51,7 @@ function App() {
         <Route path='/view-transaction' element={<ViewTransactions/>} />     
         <Route path='/payment' element={<Payment/>} />     
         <Route path='/update-profile' element={<UpdateProfile/>} />     
+        <Route path='/forgot-password' element={<Forgot/>} />     
       </Routes>
     </BrowserRouter>
   )
